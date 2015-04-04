@@ -2,8 +2,6 @@
  * relocate_kernel.S - put the kernel image in place to boot
  */
 
-#include <linux/linkage.h>
-#include <asm/assembler.h>
 #include <asm/kexec.h>
 #ifdef CONFIG_KEXEC_HARDBOOT
 #include <asm/memory.h>
@@ -73,7 +71,7 @@ relocate_new_kernel:
 	mov r0,#0
 	ldr r1,kexec_mach_type
 	ldr r2,kexec_boot_atags
- ARM(	ret lr	)
+ ARM(	mov pc, lr	)
  THUMB(	bx lr		)
 
 #ifdef CONFIG_KEXEC_HARDBOOT
@@ -134,8 +132,6 @@ kexec_mach_type:
 	.globl kexec_boot_atags
 kexec_boot_atags:
 	.long	0x0
-
-ENDPROC(relocate_new_kernel)
 
 #ifdef CONFIG_KEXEC_HARDBOOT
 	.globl kexec_boot_atags_len
